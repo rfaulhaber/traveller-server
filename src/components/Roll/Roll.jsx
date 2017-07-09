@@ -1,5 +1,6 @@
 import React, {Component} from "react";
 import Dice from '../../modules/Dice/Dice';
+import './Roll.css';
 
 export default class Roll extends Component {
     constructor(props) {
@@ -27,7 +28,7 @@ export default class Roll extends Component {
 
     render() {
         return (
-            <div>
+            <div className="Roll">
                 <h1>
                     <span>{this.state.rollValue}</span>
                     <span>
