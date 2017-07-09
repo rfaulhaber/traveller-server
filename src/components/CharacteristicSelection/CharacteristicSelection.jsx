@@ -16,7 +16,9 @@ export default class CharacterCreation extends Component {
                 'Education': {value: 0, mod: 0, assigned: false},
                 'Social Standing': {value: 0, mod: 0, assigned: false}
             },
-            rollValue: 0
+            rollValue: 0,
+            assignedCount: 0,
+            rerollDisabled: true
         }
     }
 
@@ -26,10 +28,22 @@ export default class CharacterCreation extends Component {
         characteristics[characteristic].mod = findMod(this.state.rollValue);
         characteristics[characteristic].assigned = true;
 
+        const assignedCount = this.state.assignedCount + 1;
+
+        let rerollDisabled = true;
+
+        if (assignedCount === Object.keys(characteristics).length) {
+            rerollDisabled = false;
+        }
+
+        console.log(assignedCount, rerollDisabled);
+
         this.setState({
             characteristics: characteristics,
-            rollValue: 0
-        })
+            rollValue: 0,
+            assignedCount: assignedCount,
+            rerollDisabled: rerollDisabled
+        });
     };
 
     onRollChange = (value) => {
@@ -61,6 +75,10 @@ export default class CharacterCreation extends Component {
                     )}
 
                     </tbody>
+                    <tfoot>
+                        <button disabled={this.state.rerollDisabled}>Re-roll?</button>
+                        <button>Save</button>
+                    </tfoot>
                 </table>
                 <span className="RollBox">
                     <Roll type="2D" onChange={this.onRollChange}/>
