@@ -1,7 +1,7 @@
-import React, {Component} from 'react';
-import Characteristic, {findMod} from '../../components/Characteristic/Characteristic';
-import Roll from '../../components/Roll/Roll';
-import './CharacteristicSelection.css';
+import React, {Component} from "react";
+import Characteristic, {findMod} from "../../components/Characteristic/Characteristic";
+import Roll from "../../components/Roll/Roll";
+import "./CharacteristicSelection.css";
 
 const initialCharacteristics = () => {
     return {
@@ -22,6 +22,7 @@ export default class CharacterCreation extends Component {
             characteristics: initialCharacteristics(),
             rollValue: 0,
             assignedCount: 0,
+            rollDisabled: false,
             rerollDisabled: true
         }
     }
@@ -43,12 +44,13 @@ export default class CharacterCreation extends Component {
             characteristics,
             rollValue: 0,
             assignedCount,
+            rollDisabled: false,
             rerollDisabled
         });
     };
 
     onRollChange = (value) => {
-        this.setState({rollValue: value});
+        this.setState({rollValue: value, rollDisabled: true});
     };
 
     onReroll = () => {
@@ -83,7 +85,7 @@ export default class CharacterCreation extends Component {
                     <button>Save</button>
                 </div>
                 <span className="RollBox">
-                    <Roll type="2D" onChange={this.onRollChange}/>
+                    <Roll type="2D" onChange={this.onRollChange} disabled={this.state.rollDisabled}/>
                 </span>
             </div>
         );

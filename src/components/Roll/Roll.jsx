@@ -1,6 +1,6 @@
 import React, {Component} from "react";
-import Dice from '../../modules/Dice/Dice';
-import './Roll.css';
+import Dice from "../../modules/Dice/Dice";
+import "./Roll.css";
 
 export default class Roll extends Component {
     constructor(props) {
@@ -37,7 +37,7 @@ export default class Roll extends Component {
                         }
                     </span>
                 </h1>
-                <button onClick={this.onRoll}>
+                <button onClick={this.onRoll} disabled={this.props.disabled}>
                     Roll
                 </button>
             </div>
