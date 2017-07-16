@@ -22,6 +22,7 @@ export default class CharacterCreation extends Component {
         }
     }
 
+    // TODO: refactor, remove necessity for binding
     onAssign = (characteristic) => {
         const characteristics = this.state.characteristics;
         characteristics[characteristic].value = this.state.rollValue;
