@@ -1,12 +1,7 @@
 import React, {Component} from 'react';
 import CharacteristicSelection from '../../components/CharacteristicSelection/CharacteristicSelection';
 import SkillSelection from '../../components/SkillSelection/SkillSelection';
-import CharacterCreationFooter from "../../components/CharacterCreationFooter/CharacterCreationFooter";
-
-/*
- TODO: create constant array of character creation stages, create component for each stage, increment / decrement
- stage based on progress
- */
+import Sheet from '../../modules/Sheet/Sheet';
 
 // TODO: refactor these into a function that takes an index
 const stages = [
@@ -17,13 +12,7 @@ const stages = [
     'MUSTER'
 ];
 
-const stageMap = {
-    [stages[0]]: <CharacteristicSelection/>,
-    [stages[1]]: <SkillSelection/>
-};
-
 // TODO: refactor using redux
-
 export default class CharacterCreation extends Component {
     constructor(props) {
         super(props);
@@ -31,23 +20,35 @@ export default class CharacterCreation extends Component {
         this.state = {
             stage: stages[0],
             index: 0,
+            isBackDisabled: true,
+            isNextDisabled: false,
         };
+
+        this.character = new Sheet();
     }
 
     nextStage = () => {
-        const nextIndex = this.state.index + 1;
-        this.setState({
-            stage: stages[nextIndex],
-            index: nextIndex
-        });
+        this.changeStage(this.state.index + 1);
     };
 
     previousStage = () => {
-        const nextIndex = this.state.index - 1;
-        this.setState({
-            stage: stages[nextIndex],
-            index: nextIndex
-        });
+        this.changeStage(this.state.index - 1);
+    };
+
+    changeStage = stageIndex => {
+        const nextState = {
+            stage: stages[stageIndex],
+            index: stageIndex,
+            isNextDisabled: stageIndex >= stages.length,
+            isBackDisabled: stageIndex <= 0
+        };
+
+        this.setState(nextState);
+    };
+
+    onSave = newValues => {
+        Object.assign(this.character, newValues);
+        console.log(this.character);
     };
 
     render() {
@@ -55,15 +56,22 @@ export default class CharacterCreation extends Component {
             <h1>Character creation</h1>
         );
 
-        const body = stageMap[this.state.stage];
+        this.stageMap = {
+            [stages[0]]: <CharacteristicSelection characteristics={this.character.characteristics} save={this.onSave}/>,
+            [stages[1]]: <SkillSelection skills={this.character.skills}
+                                         count={3 + this.character.characteristics.Education.mod} save={this.onSave}/>
+        };
+
+        const body = this.stageMap[this.state.stage];
 
         return (
             <div>
                 {header}
                 {body}
-                <CharacterCreationFooter onNext={this.nextStage} onBack={this.previousStage}
-                                         onBackDisabled={this.state.index === 0}
-                                         onNextDisabled={this.state.index === stages.length}/>
+                <div>
+                    <button onClick={this.previousStage} disabled={this.state.isBackDisabled}>Back</button>
+                    <button onClick={this.nextStage} disabled={this.state.isNextDisabled}>Next</button>
+                </div>
             </div>
         );
     }

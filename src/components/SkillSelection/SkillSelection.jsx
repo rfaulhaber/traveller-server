@@ -29,6 +29,9 @@ export default class SkillSelection extends Component {
             this.setState({selectedSkills: selected, count: selected.length});
         }
 
+        this.props.save({skills: selected});
+        console.log(this.state.checkboxDisabled);
+
     };
 
     render() {
@@ -58,12 +61,12 @@ export default class SkillSelection extends Component {
                 <table>
                     <tbody>
                     {skills.map(skill =>
-                        <tr colSpan={skills.indexOf(skill)}>
+                        <tr key={skill.name} colSpan={skills.indexOf(skill)}>
                             <td>
                                 {skill.name}
                             </td>
                             <td>
-                                <input type="checkbox" id={skill.name} disabled={this.state.checkboxDisabled} onClick={this.handleSkillSelect}/>
+                                <input type="checkbox" id={skill.name} disabled={skill.assigned && this.state.checkboxDisabled} onClick={this.handleSkillSelect}/>
                             </td>
                         </tr>
                     )}
