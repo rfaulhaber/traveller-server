@@ -5,29 +5,23 @@ export default class EducationPhase extends Component {
         super(props);
 
         this.state = {
-            path: ''
+            selectedRadio: ''
         };
     }
 
     handleRadioClick = event => {
         this.setState({
-            path: event.currentTarget.value
+            selectedRadio: event.currentTarget.value
         });
 
         console.log(this.state);
     };
 
     render() {
+        // TODO: make radio button component
         return (
             <div>
-                <label>
-                    <input type="radio" value="university" onClick={this.handleRadioClick}/>
-                    University
-                </label>
-                <label>
-                    <input type="radio" value="military" onClick={this.handleRadioClick}/>
-                    Military academy
-                </label>
+
             </div>
         );
     }
