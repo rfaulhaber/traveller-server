@@ -1,7 +1,8 @@
 import React, {Component} from "react";
 import Characteristic, {findMod} from "../../components/Characteristic/Characteristic";
 import Roll from "../../components/Roll/Roll";
-import "./CharacteristicSelection.css";
+import Dice from '../../modules/Dice/Dice';
+// import "./CharacteristicSelection.css";
 
 const initialCharacteristics = () => {
     return {
@@ -14,6 +15,8 @@ const initialCharacteristics = () => {
     }
 };
 
+// TODO: give choice for completely random characteristics i.e. roll 6 times and assign randomly
+
 export default class CharacterCreation extends Component {
     constructor(props) {
         super(props);
@@ -23,30 +26,33 @@ export default class CharacterCreation extends Component {
             rollValue: 0,
             assignedCount: 0,
             rollDisabled: false,
-            rerollDisabled: true
+            rerollDisabled: true,
+            randomDisabled: false
         }
     }
 
     // TODO: refactor, remove necessity for binding
     onAssign = (characteristic) => {
-        const characteristics = this.state.characteristics;
-        characteristics[characteristic].value = this.state.rollValue;
-        characteristics[characteristic].mod = findMod(this.state.rollValue);
-        characteristics[characteristic].assigned = true;
+        if (this.state.rollValue > 0) {
+            const characteristics = this.state.characteristics;
+            characteristics[characteristic].value = this.state.rollValue;
+            characteristics[characteristic].mod = findMod(this.state.rollValue);
+            characteristics[characteristic].assigned = true;
 
-        const assignedCount = this.state.assignedCount + 1;
+            const assignedCount = this.state.assignedCount + 1;
 
-        const rerollDisabled = assignedCount !== Object.keys(characteristics).length;
+            const rerollDisabled = assignedCount !== Object.keys(characteristics).length;
 
-        this.props.save({characteristics});
+            this.props.save({characteristics});
 
-        this.setState({
-            characteristics,
-            rollValue: 0,
-            assignedCount,
-            rollDisabled: false,
-            rerollDisabled
-        });
+            this.setState({
+                characteristics,
+                rollValue: 0,
+                assignedCount,
+                rollDisabled: false,
+                rerollDisabled
+            });
+        }
     };
 
     onRollChange = (value) => {
@@ -55,7 +61,20 @@ export default class CharacterCreation extends Component {
 
     onReroll = () => {
         const characteristics = initialCharacteristics();
-        this.setState({characteristics, rerollDisabled: true});
+        this.setState({characteristics, rerollDisabled: true, randomDisabled: false});
+    };
+
+    onRandom = () => {
+        const characteristics = initialCharacteristics();
+
+        for (let key of Object.keys(characteristics)) {
+            const value = Dice.d2();
+            characteristics[key].value = value;
+            characteristics[key].mod = findMod(value);
+            characteristics[key].assigned = true;
+        }
+
+        this.setState({characteristics, rerollDisabled: false, randomDisabled: true});
     };
 
     render() {
@@ -82,7 +101,7 @@ export default class CharacterCreation extends Component {
                 </table>
                 <div>
                     <button disabled={this.state.rerollDisabled} onClick={this.onReroll}>Re-roll?</button>
-                    <button>Save</button>
+                    <button disabled={this.state.randomDisabled} onClick={this.onRandom}>Random</button>
                 </div>
                 <span className="RollBox">
                     <Roll type="2D" onChange={this.onRollChange} disabled={this.state.rollDisabled}/>

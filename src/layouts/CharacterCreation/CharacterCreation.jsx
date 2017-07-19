@@ -61,7 +61,7 @@ export default class CharacterCreation extends Component {
             [stages[0]]: <CharacteristicSelection characteristics={this.character.characteristics} save={this.onSave}/>,
             [stages[1]]: <SkillSelection skills={this.character.skills}
                                          count={3 + this.character.characteristics.Education.mod} save={this.onSave}/>,
-            [stages[2]]: <CareerPhase save={this.onSave}/>
+            [stages[2]]: <CareerPhase save={this.onSave} characteristics={this.character.characteristics}/>
         };
 
         const body = this.stageMap[this.state.stage];
