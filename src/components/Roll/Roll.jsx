@@ -1,36 +1,41 @@
 import React, {Component} from "react";
-import Dice from "../../modules/Dice/Dice";
+import {connect} from 'react-redux';
+import roll from "../../actions/RollAction";
 import "./Roll.css";
 
-export default class Roll extends Component {
+class Roll extends Component {
+    onRoll = () => {
+        // const newValue = this.roll();
+        //
+        // this.setState({
+        //    rollValue: newValue
+        // });
+        //
+        // if (this.props.onChange) {
+        //     this.props.onChange(newValue);
+        // }
+
+        this.props.onRoll(this.props.rollType);
+    };
+
     constructor(props) {
         super(props);
 
-        if (!props.type) {
-            throw new Error('Type prop is required');
-        }
-
-        this.roll = rollType(props.type);
-        this.state = {rollValue: 0};
+        console.log('roll props', props);
+        //
+        // if (!props.type) {
+        //     throw new Error('Type prop is required');
+        // }
+        //
+        // this.roll = rollType(props.type);
+        // this.state = {rollValue: 0};
     }
-
-    onRoll = () => {
-        const newValue = this.roll();
-
-        this.setState({
-           rollValue: newValue
-        });
-
-        if (this.props.onChange) {
-            this.props.onChange(newValue);
-        }
-    };
 
     render() {
         return (
             <div className="Roll">
                 <h1>
-                    <span>{this.state.rollValue}</span>
+                    <span>{this.props.rollValue}</span>
                     <span>
                         {this.props.mod &&
                             " + " + this.props.mod
@@ -45,11 +50,18 @@ export default class Roll extends Component {
     }
 }
 
-export function rollType(type) {
+const mapStateToProps = state => {
     return {
-        "1D": Dice.d,
-        "2D": Dice.d2,
-        "D3": Dice.d3,
-        "D66": Dice.d66
-    }[type];
-}
+        rollValue: state.Roll.value
+    };
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+        onRoll: (rollType) => dispatch(roll(rollType))
+    };
+};
+
+Roll = connect(mapStateToProps, mapDispatchToProps)(Roll);
+
+export default Roll;

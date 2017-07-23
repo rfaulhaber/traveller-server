@@ -1,8 +1,5 @@
-import {combineReducers} from 'redux';
-import CharacterCreation from './CharacterReducer';
+const initialState = {};
 
-const reducers = combineReducers({
-    CharacterCreation
-});
-
-export default reducers;
+export default function CharacterCreation(state = initialState, action) {
+    return state;
+};
