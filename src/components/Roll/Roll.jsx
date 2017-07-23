@@ -5,31 +5,8 @@ import "./Roll.css";
 
 class Roll extends Component {
     onRoll = () => {
-        // const newValue = this.roll();
-        //
-        // this.setState({
-        //    rollValue: newValue
-        // });
-        //
-        // if (this.props.onChange) {
-        //     this.props.onChange(newValue);
-        // }
-
-        this.props.onRoll(this.props.rollType);
+        this.props.onRoll(this.props.type);
     };
-
-    constructor(props) {
-        super(props);
-
-        console.log('roll props', props);
-        //
-        // if (!props.type) {
-        //     throw new Error('Type prop is required');
-        // }
-        //
-        // this.roll = rollType(props.type);
-        // this.state = {rollValue: 0};
-    }
 
     render() {
         return (

@@ -11,9 +11,11 @@ const RollTypes = {
 };
 
 export default function roll(rollType) {
+    const value = RollTypes[rollType]();
     return {
         type: 'ROLL',
-        value: RollTypes[rollType]()
+        value,
+        mod: findMod(value)
     };
 }
 
@@ -39,4 +41,44 @@ function rollD6() {
 
 function random(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function findMod(value) {
+    let ret;
+
+    switch (value) {
+        case 0:
+            ret = -3;
+            break;
+        case 1:
+        case 2:
+            ret = -2;
+            break;
+        case 3:
+        case 4:
+        case 5:
+            ret = -1;
+            break;
+        case 6:
+        case 7:
+        case 8:
+            ret = 0;
+            break;
+        case 9:
+        case 10:
+        case 11:
+            ret = 1;
+            break;
+        case 12:
+        case 13:
+        case 14:
+            ret = 2;
+            break;
+        case 15:
+        default:
+            ret = 3;
+            break;
+    }
+
+    return ret;
 }

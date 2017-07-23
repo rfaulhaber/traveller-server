@@ -1,13 +1,12 @@
+import Characteristic, {defaultCharacteristics} from './Characteristic';
+
 export default class Sheet {
     constructor() {
-        this.characteristics = {
-            'Strength': {value: 0, mod: 0},
-            'Dexterity': {value: 0, mod: 0},
-            'Endurance': {value: 0, mod: 0},
-            'Intellect': {value: 0, mod: 0},
-            'Education': {value: 0, mod: 0},
-            'Social Standing': {value: 0, mod: 0}
-        };
+        this.characteristics = {};
+
+        for (let characteristic of defaultCharacteristics) {
+            this.characteristics[characteristic] = new Characteristic(characteristic, 0);
+        }
 
         this.skills = [];
         this.career = "";

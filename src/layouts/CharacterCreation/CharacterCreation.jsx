@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import CharacteristicSelection from "../CharacteristicSelection/CharacteristicSelection";
 import SkillSelection from "../SkillSelection/SkillSelection";
-import Sheet from "../../modules/Sheet/Sheet";
+import Sheet from "../../modules/Sheet";
 import CareerPhase from "../CareerPhase/CareerPhase";
 
 // TODO: refactor these into a function that takes an index
@@ -58,7 +58,7 @@ export default class CharacterCreation extends Component {
         );
 
         this.stageMap = {
-            [stages[0]]: <CharacteristicSelection characteristics={this.character.characteristics} save={this.onSave}/>,
+            [stages[0]]: <CharacteristicSelection/>,
             [stages[1]]: <SkillSelection skills={this.character.skills}
                                          count={3 + this.character.characteristics.Education.mod} save={this.onSave}/>,
             [stages[2]]: <CareerPhase save={this.onSave} characteristics={this.character.characteristics}/>
