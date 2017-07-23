@@ -3,20 +3,34 @@ import {connect} from 'react-redux';
 import Characteristic from '../../components/Characteristic/Characteristic';
 import Roll from '../../components/Roll/Roll';
 import {ROLL_2D} from "../../actions/RollAction";
-import {setCharacteristic} from "../../actions/CharacterCreation";
+import {rerollCharacteristics, setCharacteristic} from "../../actions/CharacterCreation";
 
 // import "./CharacteristicSelection.css";
 
 class CharacteristicSelection extends Component {
-    onAssign = characteristic => {
-        this.props.onAssign(characteristic, this.props.rollValue);
-    };
-    onReroll = () => {
-        // const characteristics = initialCharacteristics();
-        // this.setState({characteristics, rerollDisabled: true, randomDisabled: false});
+    constructor(props) {
+        super(props);
 
-        // TODO: dispatch reroll
+        this.state = {
+            assignedCount: 0,
+            rerollDisabled: true,
+            randomDisabled: false
+        };
+    }
+
+    onAssign = characteristic => {
+        if (this.props.rollValue > 0) {
+            this.props.onAssign(characteristic, this.props.rollValue);
+        }
+
+        this.setState({assignedCount: this.state.assignedCount + 1});
     };
+
+    onReroll = () => {
+        this.setState({assignedCount: 0});
+        this.props.onReroll();
+    };
+
     onRandom = () => {
         // const characteristics = initialCharacteristics();
         //
@@ -30,18 +44,6 @@ class CharacteristicSelection extends Component {
         // this.setState({characteristics, rerollDisabled: false, randomDisabled: true});
     };
 
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            assignedCount: 0,
-            rollDisabled: false,
-            rerollDisabled: true,
-            randomDisabled: false
-        };
-
-    }
-
     render() {
         return (
             <div className="CharacteristicSelection">
@@ -54,14 +56,16 @@ class CharacteristicSelection extends Component {
                                 <Characteristic value={characteristic}/>
                             </td>
                             <td>
-                                <button onClick={this.onAssign.bind(this, characteristic)}>Assign</button>
+                                <button onClick={this.onAssign.bind(this, characteristic)}
+                                        disabled={characteristic.value > 0}>Assign
+                                </button>
                             </td>
                         </tr>
                     )}
                     </tbody>
                 </table>
                 <div>
-                    <button disabled={this.state.rerollDisabled} onClick={this.onReroll}>Re-roll?</button>
+                    <button disabled={this.state.assignedCount < 6} onClick={this.onReroll}>Re-roll?</button>
                     <button disabled={this.state.randomDisabled} onClick={this.onRandom}>Random</button>
                 </div>
                 <span className="RollBox">
@@ -81,7 +85,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        onAssign: (characteristic, value) => dispatch(setCharacteristic(characteristic, value))
+        onAssign: (characteristic, value) => dispatch(setCharacteristic(characteristic, value)),
+        onReroll: () => dispatch(rerollCharacteristics())
     };
 };
 

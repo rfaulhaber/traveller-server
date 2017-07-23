@@ -1,5 +1,5 @@
 import Sheet from '../modules/Sheet';
-import {SET_CHARACTERISTIC} from "../actions/CharacterCreation";
+import {REROLL_CHARACTERISTICS, SET_CHARACTERISTIC} from "../actions/CharacterCreation";
 
 const initialState = new Sheet();
 
@@ -8,6 +8,10 @@ export default function CharacterCreation(state = initialState, action) {
         case SET_CHARACTERISTIC:
             return newState(state, {
                 characteristics: newCharacteristics(state.characteristics, action.value)
+            });
+        case REROLL_CHARACTERISTICS:
+            return newState(state, {
+                characteristics: action.value
             });
         default:
             return state;
