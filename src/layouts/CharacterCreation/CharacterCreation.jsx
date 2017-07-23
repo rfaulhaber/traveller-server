@@ -1,4 +1,5 @@
 import React, {Component} from "react";
+import {connect} from 'react-redux';
 import CharacteristicSelection from "../CharacteristicSelection/CharacteristicSelection";
 import SkillSelection from "../SkillSelection/SkillSelection";
 import Sheet from "../../modules/Sheet";
@@ -14,7 +15,7 @@ const stages = [
 ];
 
 // TODO: refactor using redux
-export default class CharacterCreation extends Component {
+class CharacterCreation extends Component {
     constructor(props) {
         super(props);
 
@@ -78,3 +79,19 @@ export default class CharacterCreation extends Component {
         );
     }
 }
+
+const mapStateToProps = state => {
+    return {
+
+    };
+};
+
+const mapDispatchToProps = dispatch => {
+    return {
+
+    };
+};
+
+CharacterCreation = connect(mapStateToProps, mapDispatchToProps)(CharacterCreation);
+
+export default CharacterCreation;

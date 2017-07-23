@@ -4,7 +4,6 @@ import Characteristic from '../../components/Characteristic/Characteristic';
 import Roll from '../../components/Roll/Roll';
 import {ROLL_2D} from "../../actions/RollAction";
 import {randomCharacteristics, rerollCharacteristics, setCharacteristic} from "../../actions/CharacterCreation";
-
 // import "./CharacteristicSelection.css";
 
 class CharacteristicSelection extends Component {
