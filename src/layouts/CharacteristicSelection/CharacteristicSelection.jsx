@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import Characteristic from '../../components/Characteristic/Characteristic';
 import Roll from '../../components/Roll/Roll';
 import {ROLL_2D} from "../../actions/RollAction";
-import {rerollCharacteristics, setCharacteristic} from "../../actions/CharacterCreation";
+import {randomCharacteristics, rerollCharacteristics, setCharacteristic} from "../../actions/CharacterCreation";
 
 // import "./CharacteristicSelection.css";
 
@@ -32,16 +32,8 @@ class CharacteristicSelection extends Component {
     };
 
     onRandom = () => {
-        // const characteristics = initialCharacteristics();
-        //
-        // for (let key of Object.keys(characteristics)) {
-        //     const value = Dice.d2();
-        //     characteristics[key].value = value;
-        //     characteristics[key].mod = findMod(value);
-        //     characteristics[key].assigned = true;
-        // }
-        //
-        // this.setState({characteristics, rerollDisabled: false, randomDisabled: true});
+        this.setState({assignedCount: 6});
+        this.props.onRandom();
     };
 
     render() {
@@ -66,7 +58,7 @@ class CharacteristicSelection extends Component {
                 </table>
                 <div>
                     <button disabled={this.state.assignedCount < 6} onClick={this.onReroll}>Re-roll?</button>
-                    <button disabled={this.state.randomDisabled} onClick={this.onRandom}>Random</button>
+                    <button disabled={this.state.assignedCount === 6} onClick={this.onRandom}>Random</button>
                 </div>
                 <span className="RollBox">
                     <Roll type={ROLL_2D} onChange={this.onRollChange} disabled={this.state.rollDisabled}/>
@@ -86,7 +78,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
     return {
         onAssign: (characteristic, value) => dispatch(setCharacteristic(characteristic, value)),
-        onReroll: () => dispatch(rerollCharacteristics())
+        onReroll: () => dispatch(rerollCharacteristics()),
+        onRandom: () => dispatch(randomCharacteristics())
     };
 };
 
